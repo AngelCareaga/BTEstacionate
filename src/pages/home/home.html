@@ -3,16 +3,27 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title>Inicio</ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-  <h3>Ionic Menu Starter</h3>
-
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+  <ion-list padding>
+    <button ion-button block (click)="startScanning()">Escanear</button>
+    <ion-list-header>
+      Dispositivos emparejados
+    </ion-list-header>
+    <ion-item *ngFor="let device of pairedDevices">
+      {{device.name}}
+    </ion-item>
+    <button ion-button block (click)="disconnect()">Desconectar</button>
+    <ion-list-header>
+      Dispositivos disponibles
+    </ion-list-header>
+    <ion-item *ngFor='let device of unpairedDevices'>
+      <span (click)="selectDevice(device.address)">
+      {{device.name}}
+    </span>
+    </ion-item>
+    <ion-spinner name="crescent" *ngIf="gettingDevices"></ion-spinner>
+  </ion-list>
 </ion-content>
