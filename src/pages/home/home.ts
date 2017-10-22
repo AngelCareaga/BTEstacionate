@@ -89,4 +89,15 @@ export class HomePage {
 		alert.present();
 	}
 
+	envia(cadEnviar)
+	{
+		try {
+			this.bluetoothSerial.write(cadEnviar);
+			//alert(cadEnviar);
+		}catch(e)
+		{
+			alert("No enviado "+e);
+		}
+	}
+
 }

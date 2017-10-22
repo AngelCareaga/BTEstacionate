@@ -25,5 +25,9 @@
     </span>
     </ion-item>
     <ion-spinner name="crescent" *ngIf="gettingDevices"></ion-spinner>
+
+   <button ion-button block (click)="envia('A')">ON</button>
+   <button ion-button block (click)="envia('B')">OFF</button>
+   <button ion-button block (click)="envia('C')">SOS</button>
   </ion-list>
 </ion-content>
