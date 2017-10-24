@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 import { AlertController } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
@@ -13,9 +14,20 @@ export class HomePage {
 	pairedDevices: any;
 	gettingDevices: Boolean;
 
-	constructor(private bluetoothSerial: BluetoothSerial, private alertCtrl: AlertController) {
+	temperatura;
+
+	constructor(private bluetoothSerial: BluetoothSerial, private alertCtrl: AlertController, public events: Events) {
 		bluetoothSerial.enable();
+		this.events.publish('escuchaRT');
+		this.events.subscribe('escuchaRT', snap=> {
+
+			this.temperatura = this.bluetoothSerial.read().then((success) => {
+				this.temperatura = success;
+			});
+
+		});
 	}
+
 	startScanning() {
 		this.pairedDevices = null;
 		this.unpairedDevices = null;
@@ -98,6 +110,15 @@ export class HomePage {
 		{
 			alert("No enviado "+e);
 		}
+	}
+
+	recibe()
+	{
+		
+		/*this.temperatura = this.bluetoothSerial.read();
+		this.temperatura = this.bluetoothSerial.read().then((success) => {
+			this.temperatura = success;
+			});*/
 	}
 
 }

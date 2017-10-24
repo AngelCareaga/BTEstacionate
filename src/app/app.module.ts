@@ -10,6 +10,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 
+import { OnChanges } from '@angular/core';
+
 @NgModule({
   declarations: [
     MyApp,
