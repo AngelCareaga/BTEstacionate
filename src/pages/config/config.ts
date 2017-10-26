@@ -2,20 +2,34 @@ import { Component } from '@angular/core';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 import { AlertController } from 'ionic-angular';
 import { Events } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { MacBluetoothProvider, MacBluetooth, MacBluetoothList } from '../../providers/mac-bluetooth/mac-bluetooth';
 
 @Component({
 	selector: 'page-config',
 	templateUrl: 'config.html'
 })
+
+
 export class ConfigPage {
 
 	unpairedDevices: any;
 	pairedDevices: any;
 	gettingDevices: Boolean;
+	model: MacBluetooth = {
+		name: "",
+		mac: "",
+		active: false
+	};
 
 	temperatura;
 
-	constructor(private bluetoothSerial: BluetoothSerial, private alertCtrl: AlertController, public events: Events) {
+	constructor(private bluetoothSerial: BluetoothSerial, 
+				private alertCtrl: AlertController, 
+				public events: Events, 
+				public storage: Storage,
+				private macBluetoothProvider: MacBluetoothProvider) 
+	{
 		bluetoothSerial.enable();
 		//setInterval(() => { this.recibe(); }, 1000 );
 	}
@@ -48,20 +62,26 @@ export class ConfigPage {
 	selectDevice(address: any) {
 
 		let alert = this.alertCtrl.create({
-			title: 'Connect',
-			message: 'Do you want to connect with?',
+			title: 'Conectar',
+			message: '¿Quieres conectarte?',
 			buttons: [
 				{
-					text: 'Cancel',
+					text: 'Cancelar',
 					role: 'cancel',
 					handler: () => {
-						console.log('Cancel clicked');
+						console.log('Cancelar clic');
 					}
 				},
 				{
-					text: 'Connect',
+					text: 'Connectar a: ' + address,
 					handler: () => {
 						this.bluetoothSerial.connect(address).subscribe(this.success, this.fail);
+						try {
+							this.guardaPreferencias(address);
+						} catch (e)
+						{
+							console.log("Error en: " + e);
+						}
 					}
 				}
 			]
@@ -72,18 +92,18 @@ export class ConfigPage {
 
 	disconnect() {
 		let alert = this.alertCtrl.create({
-			title: 'Disconnect?',
-			message: 'Do you want to Disconnect?',
+			title: 'Desconectar',
+			message: '¿Quiere desconectarse?',
 			buttons: [
 				{
-					text: 'Cancel',
+					text: 'Cancelar',
 					role: 'cancel',
 					handler: () => {
-						console.log('Cancel clicked');
+						console.log('Cancelar clic');
 					}
 				},
 				{
-					text: 'Disconnect',
+					text: 'Desconectar',
 					handler: () => {
 						this.bluetoothSerial.disconnect();
 					}
@@ -93,19 +113,29 @@ export class ConfigPage {
 		alert.present();
 	}
 
-	envia(cadEnviar) {
-		try {
-			this.bluetoothSerial.write(cadEnviar);
-			//alert(cadEnviar);
-		} catch (e) {
-			alert("No enviado " + e);
-		}
+
+	guardaPreferencias(strBluetoothMac)
+	{
+		this.storage.ready().then(() => {
+		
+			this.model.name = "BTSelect";
+			this.model.mac = strBluetoothMac;
+			this.model.active = true;
+			this.macBluetoothProvider.save("confDefecto", this.model);
+		});
 	}
 
-	recibe() {
-		this.temperatura = this.bluetoothSerial.read().then((success) => {
-			this.temperatura = success;
+	compruebaPreferencias()
+	{
+		var regresaMac = "";
+		// Or to get a key/value pair
+		this.storage.ready().then(() => {
+			this.storage.get('strBluetoothMac').then((val) => {
+				regresaMac = val;
+			});
 		});
+
+		return regresaMac;
 	}
 
 }

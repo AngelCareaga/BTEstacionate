@@ -2,26 +2,77 @@ import { Component } from '@angular/core';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 import { AlertController } from 'ionic-angular';
 import { Events } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { MacBluetoothProvider, MacBluetooth, MacBluetoothList } from '../../providers/mac-bluetooth/mac-bluetooth';
+
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
+
 export class HomePage {
+
+	macs: MacBluetoothList[];
+	model: MacBluetooth = {
+		name:"",
+		mac:"",
+		active:false
+	};
+	key: string = "1";
 
 	unpairedDevices: any;
 	pairedDevices: any;
 	gettingDevices: Boolean;
 
+	macObtenida: string = "";
+
 	temperatura;
 
 
 
-	constructor(private bluetoothSerial: BluetoothSerial, private alertCtrl: AlertController, public events: Events) {
+	constructor(private bluetoothSerial: BluetoothSerial, 
+				private alertCtrl: AlertController, 
+				public events: Events,
+				public storage: Storage,
+				private macBluetoothProvider: MacBluetoothProvider) 
+	{
 		bluetoothSerial.enable();
 		
 		//setInterval(() => { this.recibe(); }, 1000 );
-	
+		//alert("Es: " + this.compruebaPreferencias());
+		/*if (this.compruebaPreferencias()!="") {
+			// code...
+		}*/
+		this.consulta();
+		
+	}
+
+	consulta()
+	{
+		this.macBluetoothProvider.getAll()
+			.then((result) => {
+				this.macs = result;
+			});
+		for (var i in this.macs) {
+			if (this.macs[i].key == "BTSelect") {
+				//alert("Nombre: " + this.macs[i].macBluetooth.name);
+				//alert("MAC: " + this.macs[i].macBluetooth.mac);
+				this.bluetoothSerial.connect(this.macs[i].macBluetooth.mac).subscribe(this.success, this.fail);
+				this.macObtenida = this.macs[i].macBluetooth.mac;
+			}
+				
+		}
+		
+	}
+
+	guarda(texto:string)
+	{
+		alert("Txt: " + texto);
+		this.model.name = "BTSelect";
+		this.model.mac = texto;
+		this.model.active = true;
+		this.macBluetoothProvider.save("BTSelect", this.model);
 	}
 
 
@@ -116,4 +167,13 @@ export class HomePage {
 			});
 	}
 
+	compruebaPreferencias() {
+		var regresaMac = "";
+		// Or to get a key/value pair
+		this.storage.get('strBluetoothMac').then((val) => {
+			regresaMac = val;
+		});
+
+		return regresaMac;
+	}	
 }

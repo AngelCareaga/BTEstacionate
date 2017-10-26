@@ -7,29 +7,25 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <ion-list padding>
-    <button ion-button block (click)="startScanning()">Escanear</button>
-    <ion-list-header>
-      Dispositivos emparejados
-    </ion-list-header>
-    <ion-item *ngFor="let device of pairedDevices">
-      {{device.name}}
-    </ion-item>
-    <button ion-button block (click)="disconnect()">Desconectar</button>
-    <ion-list-header>
-      Dispositivos disponibles
-    </ion-list-header>
-    <ion-item *ngFor='let device of unpairedDevices'>
-      <span (click)="selectDevice(device.address)">
-      {{device.name}}
-    </span>
-    </ion-item>
-    <ion-spinner name="crescent" *ngIf="gettingDevices"></ion-spinner>
-
-   <button ion-button block (click)="envia('A')">ON</button>
-   <button ion-button block (click)="envia('B')">OFF</button>
-   <button ion-button block (click)="envia('C')">SOS</button>
-   <button ion-button block (click)="recibe()">Recibe</button>
-   <h2>{{temperatura}}</h2>
-  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <h5>Escribe o escanea el código</h5>
+      <ion-col col-8>
+        <ion-item style="padding-left: 0em;">
+          <ion-label floating>Texto</ion-label>
+          <ion-input type="text" value="" [(ngModel)]="inputBusqueda"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col col-4>
+        <button ion-button (click)="guarda(inputBusqueda)" style="top: 2em;">GUARDAR</button>
+      </ion-col>
+       <ion-col col-12>
+        <button ion-button (click)="consulta()" style="top: 2em;">MUESTRA</button>
+      </ion-col>
+      <ion-col col-12>
+        <h3>{{macObtenida}}</h3>
+      </ion-col>
+      
+    </ion-row>
+  </ion-grid>
 </ion-content>
