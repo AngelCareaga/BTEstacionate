@@ -4,10 +4,10 @@ import { AlertController } from 'ionic-angular';
 import { Events } from 'ionic-angular';
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+	selector: 'page-config',
+	templateUrl: 'config.html'
 })
-export class HomePage {
+export class ConfigPage {
 
 	unpairedDevices: any;
 	pairedDevices: any;
@@ -15,15 +15,10 @@ export class HomePage {
 
 	temperatura;
 
-
-
 	constructor(private bluetoothSerial: BluetoothSerial, private alertCtrl: AlertController, public events: Events) {
 		bluetoothSerial.enable();
-		
 		//setInterval(() => { this.recibe(); }, 1000 );
-	
 	}
-
 
 	startScanning() {
 		this.pairedDevices = null;
@@ -98,22 +93,19 @@ export class HomePage {
 		alert.present();
 	}
 
-	envia(cadEnviar)
-	{
+	envia(cadEnviar) {
 		try {
 			this.bluetoothSerial.write(cadEnviar);
 			//alert(cadEnviar);
-		}catch(e)
-		{
-			alert("No enviado "+e);
+		} catch (e) {
+			alert("No enviado " + e);
 		}
 	}
 
-	recibe()
-	{
+	recibe() {
 		this.temperatura = this.bluetoothSerial.read().then((success) => {
 			this.temperatura = success;
-			});
+		});
 	}
 
 }

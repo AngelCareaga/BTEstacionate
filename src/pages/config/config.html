@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Configuración</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-list padding>
+    <button ion-button block (click)="startScanning()">Escanear</button>
+    <ion-list-header>
+      Dispositivos emparejados
+    </ion-list-header>
+    <ion-item *ngFor="let device of pairedDevices">
+      {{device.name}}
+    </ion-item>
+    <button ion-button block (click)="disconnect()">Desconectar</button>
+    <ion-list-header>
+      Dispositivos disponibles
+    </ion-list-header>
+    <ion-item *ngFor='let device of unpairedDevices'>
+      <span (click)="selectDevice(device.address)">
+      {{device.name}}
+    </span>
+    </ion-item>
+    <ion-spinner name="crescent" *ngIf="gettingDevices"></ion-spinner>
+
+   <button ion-button block (click)="envia('A')">ON</button>
+   <button ion-button block (click)="envia('B')">OFF</button>
+   <button ion-button block (click)="envia('C')">SOS</button>
+   <button ion-button block (click)="recibe()">Recibe</button>
+   <h2>{{temperatura}}</h2>
+  </ion-list>
+</ion-content>

@@ -5,17 +5,18 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { ConfigPage } from '../pages/config/config';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 
-import { OnChanges } from '@angular/core';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
+    ConfigPage,
     ListPage
   ],
   imports: [
@@ -26,6 +27,7 @@ import { OnChanges } from '@angular/core';
   entryComponents: [
     MyApp,
     HomePage,
+    ConfigPage,
     ListPage
   ],
   providers: [
