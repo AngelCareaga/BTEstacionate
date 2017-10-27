@@ -13,7 +13,9 @@
       Dispositivos emparejados
     </ion-list-header>
     <ion-item *ngFor="let device of pairedDevices">
+      <span (click)="selectDevice(device.address)">
       {{device.name}}
+    </span>
     </ion-item>
     <button ion-button block (click)="disconnect()">Desconectar</button>
     <ion-list-header>

@@ -3,7 +3,7 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 import { AlertController } from 'ionic-angular';
 import { Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { MacBluetoothProvider, MacBluetooth, MacBluetoothList } from '../../providers/mac-bluetooth/mac-bluetooth';
+import { MacBluetoothProvider, MacBluetooth } from '../../providers/mac-bluetooth/mac-bluetooth';
 
 @Component({
 	selector: 'page-config',
@@ -77,6 +77,7 @@ export class ConfigPage {
 					handler: () => {
 						this.bluetoothSerial.connect(address).subscribe(this.success, this.fail);
 						try {
+							this.macBluetoothProvider.remove("BTSelect");
 							this.guardaPreferencias(address);
 						} catch (e)
 						{
@@ -121,7 +122,7 @@ export class ConfigPage {
 			this.model.name = "BTSelect";
 			this.model.mac = strBluetoothMac;
 			this.model.active = true;
-			this.macBluetoothProvider.save("confDefecto", this.model);
+			this.macBluetoothProvider.save("BTSelect", this.model);
 		});
 	}
 

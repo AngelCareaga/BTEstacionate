@@ -26,8 +26,10 @@ export class HomePage {
 	gettingDevices: Boolean;
 
 	macObtenida: string = "";
-
-	temperatura;
+	alertMensajes: string = "";
+	numDistancia;
+	numDistanciaDos: number =11;
+	msgEstado: string = "";
 
 
 
@@ -39,11 +41,11 @@ export class HomePage {
 	{
 		bluetoothSerial.enable();
 		
-		//setInterval(() => { this.recibe(); }, 1000 );
 		//alert("Es: " + this.compruebaPreferencias());
 		/*if (this.compruebaPreferencias()!="") {
 			// code...
 		}*/
+		this.consulta();
 		this.consulta();
 		
 	}
@@ -54,12 +56,16 @@ export class HomePage {
 			.then((result) => {
 				this.macs = result;
 			});
+
 		for (var i in this.macs) {
 			if (this.macs[i].key == "BTSelect") {
-				//alert("Nombre: " + this.macs[i].macBluetooth.name);
-				//alert("MAC: " + this.macs[i].macBluetooth.mac);
 				this.bluetoothSerial.connect(this.macs[i].macBluetooth.mac).subscribe(this.success, this.fail);
 				this.macObtenida = this.macs[i].macBluetooth.mac;
+				try {
+					setInterval(() => { this.recibe(); }, 1000);
+				} catch (e) {
+					console.log("Error en: " + e);
+				}
 			}
 				
 		}
@@ -72,6 +78,7 @@ export class HomePage {
 		this.model.name = "BTSelect";
 		this.model.mac = texto;
 		this.model.active = true;
+		this.macBluetoothProvider.remove("BTSelect");
 		this.macBluetoothProvider.save("BTSelect", this.model);
 	}
 
@@ -118,6 +125,11 @@ export class HomePage {
 					text: 'Connect',
 					handler: () => {
 						this.bluetoothSerial.connect(address).subscribe(this.success, this.fail);
+						try {
+							setInterval(() => { this.recibe(); }, 1000);
+						} catch (e) {
+							console.log("Error en: " + e);
+						}
 					}
 				}
 			]
@@ -125,6 +137,9 @@ export class HomePage {
 		alert.present();
 
 	}
+
+	msjExito = (data) => this.alertMensajes = "Se ha conectado correctamente.";
+	msjError = (data) => this.alertMensajes = "Intentelo de nuevo.";
 
 	disconnect() {
 		let alert = this.alertCtrl.create({
@@ -148,32 +163,28 @@ export class HomePage {
 		});
 		alert.present();
 	}
-
-	envia(cadEnviar)
+	recibe()
 	{
-		try {
-			this.bluetoothSerial.write(cadEnviar);
-			//alert(cadEnviar);
-		}catch(e)
-		{
-			alert("No enviado "+e);
+		
+		this.numDistancia = this.bluetoothSerial.read().then((success) => {
+			this.numDistancia = "Distancia: " + success + " cm";
+			this.numDistanciaDos = success;
+			});
+
+		
+		//alert("Recibe: " + this.numDistancia + " parse: " + recNum);
+		this.styleFondo = { 'background-color': 'white' };
+		if (this.numDistanciaDos <= 10) {
+			this.msgEstado = "Estas muy cerca, cuidado.";
+			this.styleFondo = { 'background-color': '#C62828' };
+		} else if (this.numDistanciaDos >= 11 && this.numDistanciaDos <= 30) {
+			this.msgEstado = "La distancia es buena."
+			this.styleFondo = { 'background-color': '#FFD740' };
+		} else if (this.numDistanciaDos >= 31) {
+			this.msgEstado = "Aún tienes bastante espacio."
+			this.styleFondo = { 'background-color': '#33691E' };
 		}
 	}
 
-	recibe()
-	{
-		this.temperatura = this.bluetoothSerial.read().then((success) => {
-			this.temperatura = success;
-			});
-	}
-
-	compruebaPreferencias() {
-		var regresaMac = "";
-		// Or to get a key/value pair
-		this.storage.get('strBluetoothMac').then((val) => {
-			regresaMac = val;
-		});
-
-		return regresaMac;
-	}	
+	styleFondo = {'background-color': 'white'};
 }

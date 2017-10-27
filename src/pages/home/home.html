@@ -6,26 +6,33 @@
     <ion-title>Inicio</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content padding [ngStyle]="styleFondo">
   <ion-grid>
     <ion-row>
-      <h5>Escribe o escanea el código</h5>
-      <ion-col col-8>
-        <ion-item style="padding-left: 0em;">
-          <ion-label floating>Texto</ion-label>
-          <ion-input type="text" value="" [(ngModel)]="inputBusqueda"></ion-input>
-        </ion-item>
+      <ion-col col-12>
+        <h3 style="text-align: center;">Para iniciar a detectar la distancia, da clic en iniciar.</h3>
       </ion-col>
       <ion-col col-4>
-        <button ion-button (click)="guarda(inputBusqueda)" style="top: 2em;">GUARDAR</button>
+        
       </ion-col>
-       <ion-col col-12>
-        <button ion-button (click)="consulta()" style="top: 2em;">MUESTRA</button>
+      <ion-col col-4>
+        <button ion-button (click)="consulta()">INICIAR</button>
       </ion-col>
+      <ion-col col-4>
+        
+      </ion-col>
+
       <ion-col col-12>
-        <h3>{{macObtenida}}</h3>
+        <span style="color: white;">-</span>
       </ion-col>
-      
+
+      <ion-col col-12>
+          <h1>{{msgEstado}}</h1>
+      </ion-col>
+
+      <ion-col col-12>
+        <h3>{{numDistancia}}</h3>
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
