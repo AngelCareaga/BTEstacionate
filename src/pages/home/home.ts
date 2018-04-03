@@ -1,8 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
-import { AlertController } from 'ionic-angular';
-import { Events } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 import { MacBluetoothProvider, MacBluetooth, MacBluetoothList } from '../../providers/mac-bluetooth/mac-bluetooth';
 
 @Component({
