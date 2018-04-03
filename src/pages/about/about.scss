@@ -1,0 +1,49 @@
+page-about {
+    .scroll-content {
+        overflow: hidden;
+    }
+    .about {
+        background-color: #FAFAFA;
+    }
+    .about .iconoOnecolors {
+        width: 25%;
+        height: 25%;
+        position: fixed;
+        z-index: -1;
+        text-align: center;
+    }
+    .about .titulo {
+        margin-top: -1%;
+        color: #212121;
+        text-align: center;
+    }
+    .about .autor {
+        color: #212121;
+        text-align: center;
+    }
+    .about .autorContacto {
+        color: #212121;
+        font-size: 90%;
+        text-align: center;
+    }
+    .about.version {
+        color: red;
+        text-align: center;
+    }
+    .about.nombreVersion {
+        color: red;
+        text-align: center;
+    }
+    .about.texto {
+        color: #303030;
+        text-align: center;
+    }
+    .about .licencia {
+        color: #303030;
+        text-align: center;
+    }
+    .about.parrafo {
+        color: #303030;
+        text-align: center;
+    }
+}
