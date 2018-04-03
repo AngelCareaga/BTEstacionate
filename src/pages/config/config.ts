@@ -25,17 +25,17 @@ export class ConfigPage implements OnInit {
 
 	/**
 	 * Inicializa todas las variables a utilizar en config.
-	 * @param bluetoothSerial Variable para acceder al Bluetooth.
-	 * @param alertCtrl Variable para enviar alertas.
-	 * @param events Variable para registrar los eventos.
-	 * @param storage Variable para guardar en memoria.
-	 * @param macBluetoothProvider Variable que guarda la dirección MAC obtenida.
+	 * @param _bluetoothSerial Variable para acceder al Bluetooth.
+	 * @param _alertCtrl Variable para enviar alertas.
+	 * @param _events Variable para registrar los eventos.
+	 * @param _storage Variable para guardar en memoria.
+	 * @param _macBluetoothProvider Variable que guarda la dirección MAC obtenida.
 	 */
-	constructor(private bluetoothSerial: BluetoothSerial,
-		private alertCtrl: AlertController,
-		public events: Events,
-		public storage: Storage,
-		private macBluetoothProvider: MacBluetoothProvider) {
+	constructor(private _bluetoothSerial: BluetoothSerial,
+		private _alertCtrl: AlertController,
+		public _events: Events,
+		public _storage: Storage,
+		private _macBluetoothProvider: MacBluetoothProvider) {
 		// Inicializa variables
 		this.alertMensajes = '';
 	}
@@ -44,14 +44,14 @@ export class ConfigPage implements OnInit {
 	 * Se ejecuta al iniciar.
 	 */
 	ngOnInit(): void {
-		this.bluetoothSerial.enable();
+		this._bluetoothSerial.enable();
 	}
 
 	/** 
 	 * Se ejecuta justo antes de terminar.
 	*/
 	ngOnDestroy(): void {
-		this.bluetoothSerial.disconnect();
+		this._bluetoothSerial.disconnect();
 	}
 
 	/**
@@ -70,7 +70,7 @@ export class ConfigPage implements OnInit {
 		this.pairedDevices = null;
 		this.unpairedDevices = null;
 		this.gettingDevices = true;
-		this.bluetoothSerial.discoverUnpaired().then((success) => {
+		this._bluetoothSerial.discoverUnpaired().then((success) => {
 			this.unpairedDevices = success;
 			this.gettingDevices = false;
 			success.forEach(element => {
@@ -81,7 +81,7 @@ export class ConfigPage implements OnInit {
 				console.log(err);
 			})
 
-		this.bluetoothSerial.list().then((success) => {
+		this._bluetoothSerial.list().then((success) => {
 			this.pairedDevices = success;
 		},
 			(err) => {
@@ -94,7 +94,7 @@ export class ConfigPage implements OnInit {
 	 * @param address Recibe la dirección MAC, e intenta conectar a esta.
 	 */
 	selectDevice(address: any): void {
-		let alert = this.alertCtrl.create({
+		let alert = this._alertCtrl.create({
 			title: 'Conectar',
 			message: '¿Quieres conectarte?',
 			buttons: [
@@ -108,9 +108,9 @@ export class ConfigPage implements OnInit {
 				{
 					text: 'Conectar a: ' + address,
 					handler: () => {
-						this.bluetoothSerial.connect(address).subscribe(this.success, this.fail);
+						this._bluetoothSerial.connect(address).subscribe(this.success, this.fail);
 						try {
-							this.macBluetoothProvider.remove('BTSelect');
+							this._macBluetoothProvider.remove('BTSelect');
 							this.guardaPreferencias(address);
 						} catch (e) {
 							console.log('Error en: ' + e);
@@ -126,7 +126,7 @@ export class ConfigPage implements OnInit {
 	 * Desconecta del dispositivo Bluetooth.
 	*/
 	disconnect(): void {
-		let alert = this.alertCtrl.create({
+		let alert = this._alertCtrl.create({
 			title: 'Desconectar',
 			message: '¿Quiere desconectarse?',
 			buttons: [
@@ -140,7 +140,7 @@ export class ConfigPage implements OnInit {
 				{
 					text: 'Desconectar',
 					handler: () => {
-						this.bluetoothSerial.disconnect();
+						this._bluetoothSerial.disconnect();
 					}
 				}
 			]
@@ -154,12 +154,12 @@ export class ConfigPage implements OnInit {
 	 * @param strBluetoothMac 
 	 */
 	guardaPreferencias(strBluetoothMac): void {
-		this.storage.ready().then(() => {
+		this._storage.ready().then(() => {
 
 			this.model.name = 'BTSelect';
 			this.model.mac = strBluetoothMac;
 			this.model.active = true;
-			this.macBluetoothProvider.save('BTSelect', this.model);
+			this._macBluetoothProvider.save('BTSelect', this.model);
 		});
 	}
 
@@ -168,8 +168,8 @@ export class ConfigPage implements OnInit {
 	*/
 	compruebaPreferencias(): string {
 		let regresaMac = '';
-		this.storage.ready().then(() => {
-			this.storage.get('strBluetoothMac').then((val) => {
+		this._storage.ready().then(() => {
+			this._storage.get('strBluetoothMac').then((val) => {
 				regresaMac = val;
 			});
 		});

@@ -5,34 +5,38 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class MacBluetoothProvider {
 
-	constructor(private storage: Storage) {
+	/**
+	 * Inicializa todas las variables a utilizar en el provider.
+	 * @param _storage Variable para guardar en memoria.
+	 */
+	constructor(private _storage: Storage) {
 	}
 
 	/**
 	 * Guarda en memoria, invocando al método local 'save'.
 	 * @param key Recibe el identificador.
-	 * @param mac Recibe el valor.
+	 * @param _mac Recibe el valor.
 	 */
-	public insert(key: string, mac: MacBluetooth): Promise<any> {
-		return this.save(key, mac);
+	public insert(key: string, _mac: MacBluetooth): Promise<any> {
+		return this.save(key, _mac);
 	}
 
 	/**
 	 * Actualiza valor en memoria, invocando al método local 'save'.
 	 * @param key Recibe el identificador.
-	 * @param mac Recibe el valor.
+	 * @param _mac Recibe el valor.
 	 */
-	public update(key: string, mac: MacBluetooth): Promise<any> {
-		return this.save(key, mac);
+	public update(key: string, _mac: MacBluetooth): Promise<any> {
+		return this.save(key, _mac);
 	}
 
 	/**
 	 * Asigna valores en memoria, con ayuda del plugin 'storage'.
 	 * @param key Recibe el identificador.
-	 * @param mac Recibe el valor.
+	 * @param _mac Recibe el valor.
 	 */
-	public save(key: string, mac: MacBluetooth): Promise<any> {
-		return this.storage.set(key, mac);
+	public save(key: string, _mac: MacBluetooth): Promise<any> {
+		return this._storage.set(key, _mac);
 	}
 
 	/**
@@ -40,7 +44,7 @@ export class MacBluetoothProvider {
 	 * @param key Recibe el identificador.
 	 */
 	public remove(key: string): Promise<any> {
-		return this.storage.remove(key);
+		return this._storage.remove(key);
 	}
 
 	/** 
@@ -51,7 +55,7 @@ export class MacBluetoothProvider {
 
 		let macsBluetooth: MacBluetoothList[] = [];
 
-		return this.storage.forEach((value: MacBluetooth, key: string, iterationNumber: number) => {
+		return this._storage.forEach((value: MacBluetooth, key: string, iterationNumber: number) => {
 			let macBluetooth = new MacBluetoothList();
 			macBluetooth.key = key;
 			macBluetooth.macBluetooth = value;

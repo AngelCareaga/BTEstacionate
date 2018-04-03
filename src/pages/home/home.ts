@@ -25,11 +25,11 @@ export class HomePage implements OnInit, OnDestroy {
 
 	/**
 	 * Inicializa todas las variables a utilizar en home.
-	 * @param bluetoothSerial Variable para acceder al Bluetooth.
-	 * @param macBluetoothProvider Variable que guarda la dirección MAC obtenida.
+	 * @param _bluetoothSerial Variable para acceder al Bluetooth.
+	 * @param _macBluetoothProvider Variable que guarda la dirección MAC obtenida.
 	 */
-	constructor(private bluetoothSerial: BluetoothSerial,
-		private macBluetoothProvider: MacBluetoothProvider) {
+	constructor(private _bluetoothSerial: BluetoothSerial,
+		private _macBluetoothProvider: MacBluetoothProvider) {
 		// Inicializa variables
 		this.key = '1';
 		this.macObtenida = '';
@@ -45,7 +45,7 @@ export class HomePage implements OnInit, OnDestroy {
 	 */
 	ngOnInit(): void {
 		// Ejecuta funciones al inicio
-		this.bluetoothSerial.enable();
+		this._bluetoothSerial.enable();
 		this.consulta();
 		this.consulta();
 	}
@@ -54,7 +54,7 @@ export class HomePage implements OnInit, OnDestroy {
 	* Se ejecuta justo antes de terminar.
 	*/
 	ngOnDestroy(): void {
-		this.bluetoothSerial.disconnect();
+		this._bluetoothSerial.disconnect();
 	}
 
 	/**
@@ -68,14 +68,14 @@ export class HomePage implements OnInit, OnDestroy {
 	 * dirección MAC asociada, o guardada. Si es así se conecta a esta.
 	*/
 	consulta(): void {
-		this.macBluetoothProvider.getAll()
+		this._macBluetoothProvider.getAll()
 			.then((result) => {
 				this.macs = result;
 			});
 
 		for (var i in this.macs) {
 			if (this.macs[i].key == 'BTSelect') {
-				this.bluetoothSerial.connect(this.macs[i].macBluetooth.mac).subscribe(this.msjExito, this.msjError);
+				this._bluetoothSerial.connect(this.macs[i].macBluetooth.mac).subscribe(this.msjExito, this.msjError);
 				this.macObtenida = this.macs[i].macBluetooth.mac;
 				try {
 					setInterval(() => { this.recibe(); }, 1000);
@@ -92,7 +92,7 @@ export class HomePage implements OnInit, OnDestroy {
 	 * cambia los colores y textos, de acuerdo a los datos recibidos.
 	*/
 	recibe(): void {
-		this.numDistancia = this.bluetoothSerial.read().then((success) => {
+		this.numDistancia = this._bluetoothSerial.read().then((success) => {
 			this.numDistancia = 'Distancia: ' + success + ' cm';
 			this.numDistanciaDos = success;
 		});
