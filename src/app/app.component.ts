@@ -1,10 +1,16 @@
+/**
+ * Componentes nativos.
+ */
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+/**
+ * Componentes pantallas / interfaz.
+ */
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { AboutPage } from '../pages/about/about';
 import { ConfigPage } from '../pages/config/config';
 
 @Component({
@@ -15,32 +21,35 @@ export class MyApp {
 
   rootPage: any = HomePage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
 
-    // used for an example of ngFor and navigation
+    // Asignación de titulos para componentes interfaz.
     this.pages = [
       { title: 'Inicio', component: HomePage },
-    { title: 'Configuración', component: ConfigPage },
-      { title: 'Acerca de', component: ListPage }
+      { title: 'Configuración', component: ConfigPage },
+      { title: 'Acerca de', component: AboutPage }
     ];
 
   }
 
+  /** 
+   * Cuando se cargo la aplicación, se inicializan los plugins de 'statusBar' y 'splashScreen'.
+  */
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
   }
 
+  /**
+   * Auxilia a la apertura de componentes de interfaz.
+   * @param page Recibe la página.
+   */
   openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
 }

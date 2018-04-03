@@ -2,15 +2,28 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
+/**
+ * Componente base a cargar páginas.
+ */
 import { MyApp } from './app.component';
+
+/**
+ * Componentes pantallas / interfaz.
+ */
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { AboutPage } from '../pages/about/about';
 import { ConfigPage } from '../pages/config/config';
 
+/**
+ * Plugins por defecto.
+ */
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 
+/**
+ * Plugins agregados.
+ */
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 import { IonicStorageModule } from '@ionic/storage';
 import { MacBluetoothProvider } from '../providers/mac-bluetooth/mac-bluetooth';
 
@@ -20,7 +33,7 @@ import { MacBluetoothProvider } from '../providers/mac-bluetooth/mac-bluetooth';
     MyApp,
     HomePage,
     ConfigPage,
-    ListPage
+    AboutPage
   ],
   imports: [
     BrowserModule,
@@ -32,14 +45,14 @@ import { MacBluetoothProvider } from '../providers/mac-bluetooth/mac-bluetooth';
     MyApp,
     HomePage,
     ConfigPage,
-    ListPage
+    AboutPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     BluetoothSerial,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     MacBluetoothProvider
   ]
 })
-export class AppModule {}
+export class AppModule { }

@@ -2,7 +2,7 @@
     "name": "BTEstacionate",
     "version": "0.0.1",
     "author": "Ángel Careaga",
-    "homepage": "http://ionicframework.com/",
+    "homepage": "http://angelcareaga.me/",
     "private": true,
     "scripts": {
         "clean": "ionic-app-scripts clean",
