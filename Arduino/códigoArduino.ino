@@ -19,24 +19,25 @@
  * @version    1.0
  */
 
-int pinReceptor = A0; // Establecemos el PIN para leer.
-int sensorVal; // Declaramos esta variable para almacenar el valor de la lectura.
-
-/**
-* Se establecen configuraciones
+/*Aqui se configuran los pines donde debemos conectar el sensor*/
+#define TRIGGER_PIN  9
+#define ECHO_PIN     8
+#define MAX_DISTANCE 200
+ 
+/*Crear el objeto de la clase NewPing
+Libreria utilizada: http://playground.arduino.cc/Code/NewPing
 */
-void setup()
-{
-	Serial.begin(9600); // abre el Puerto serie y configurando la velocidad en 9600 bps.
-}
-
-/**
-* Crea una función 'infinita', así que todo lo que va dentro se repite.
-*/
-void loop()
-{
-  sensorVal = analogRead(pinReceptor); // Recibimos el valor del sensor y lo almacenamos el valor.
-  Serial.println.(sensorVal); // Se imprime esta lectura, la cual se esta enviando por Bluetooth.
-  delay(500); // Hace una pausa de medio segundo antes de leer de nuevo otro valor
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+ 
+void setup() {
+  Serial.begin(9600);
 }
  
+void loop() {
+  // Esperar 1 segundo entre mediciones
+  delay(1000);
+  // Obtener medicion de tiempo de viaje del sonido y guardar en variable uS
+  int uS = sonar.ping_median();
+  // Calcular la distancia con base en una constante
+  Serial.print(uS / US_ROUNDTRIP_CM);
+}
